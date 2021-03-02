@@ -1,3 +1,4 @@
+import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 
 class Person {
@@ -29,7 +30,8 @@ class Person {
     return p?.age; // p가 null 이 아닐 경우에만 출력, 이경우 미출력
   }
 
-  //Dart 에는 interface 가 없지만, impletement 로 재정의 가능하다.
+  //Dart 에는 interface 가 없지만, impletement 로 재정의 해야하다.
+
 }
 
 void practice() {
@@ -58,13 +60,31 @@ void practice() {
   // ages.where((age) => age >= 13).forEach(print);
   // ages.where((age) => age.contains(11)).forEach(print);
   // names.where((name) => name.contains('john')).forEach(print);
+
+  // Future , Stream Class는 비동기에 사용하니 추가로 공부할 것
 }
 
 void main() => runApp(MyApp());
 
+//State Class 의
+class RandomWordsState extends State<RandomWords> {
+  @override
+  Widget build(BuildContext context) {
+    final wordPair = WordPair.random();
+    return Text(wordPair.asPascalCase);
+  }
+}
+
+// StatefullWidget 사용 시 2개 Class 필요, 구조 외우잔
+class RandomWords extends StatefulWidget {
+  @override
+  RandomWordsState createState() => RandomWordsState();
+}
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // final wordPair = WordPair.random();
     return MaterialApp(
       title: 'Welcome to Flutter MaterialApp',
       home: Scaffold(
@@ -72,7 +92,8 @@ class MyApp extends StatelessWidget {
           title: Text('Welcome to Flutter AppBar'),
         ),
         body: Center(
-          child: Text('Hello world!'),
+          // child: Text(wordPair.asPascalCase),
+          child: RandomWords(),
         ),
       ),
     );
