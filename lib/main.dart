@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 
@@ -68,8 +70,9 @@ void main() => runApp(MyApp());
 
 //State Class 의
 class RandomWordsState extends State<RandomWords> {
-  //list 변수
-  final _suggestions = <WordPair>[];
+  final _suggestions = <WordPair>[]; //[] 는 list 변수
+  final Set<WordPair> _saved = Set<WordPair>();
+  // Set 중복 불허, HashSet : 정렬 없음, LinkedHashSet : defualt set 입력 순, SplayTreeSet : 정렬 있음
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
   @override
@@ -79,9 +82,9 @@ class RandomWordsState extends State<RandomWords> {
 
     // Scaffold 는 State 에서 만드데, 값이 계속 바뀜
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Startup Name Generator'),
-      ),
+      appBar: AppBar(title: Text('Startup Name Generator'), actions: <Widget>[
+        IconButton(icon: Icon(Icons.list), onPressed: _pushSaved)
+      ]),
       body: _buildSuggestions(),
     );
   }
@@ -101,12 +104,57 @@ class RandomWordsState extends State<RandomWords> {
   }
 
   Widget _buildRow(WordPair pair) {
+    final bool alreadySaved = _saved.contains(pair);
     return ListTile(
-      title: Text(
-        pair.asPascalCase,
-        style: _biggerFont,
-      ),
-    );
+        title: Text(
+          pair.asPascalCase,
+          style: _biggerFont,
+        ),
+        trailing: Icon(
+          alreadySaved ? Icons.favorite : Icons.favorite_border,
+          color: alreadySaved ? Colors.red : null,
+        ),
+        onTap: () {
+          // ListTile 클릭 시 이벤트 setState (StateFull): 화면 전체를 그림
+          setState(() {
+            if (alreadySaved) {
+              _saved.remove(pair);
+            } else {
+              _saved.add(pair);
+            }
+          });
+        });
+  }
+
+  //화면이동
+  void _pushSaved() {
+    // 쉽게쉽게 쓸 수 있는 건 static (ex, of)로 함
+    Navigator.of(context).push(MaterialPageRoute<void>(
+      builder: (BuildContext context) {
+        // map method 는 원하는 type, class 등으로 만드는 것, 여기선 Iterable
+        final Iterable<ListTile> tiles = _saved.map(
+          (WordPair pair) {
+            return ListTile(
+                title: Text(
+              pair.asPascalCase,
+              style: _biggerFont,
+            ));
+          },
+        );
+        final List<Widget> divided = ListTile.divideTiles(
+          context: context,
+          tiles: tiles,
+        ).toList();
+
+        // 그 다음 화면 으로 전달
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Saved Suggestions'),
+          ),
+          body: ListView(children: divided),
+        );
+      },
+    ));
   }
 }
 
@@ -121,8 +169,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // final wordPair = WordPair.random();
     return MaterialApp(
-        title: 'Welcome to Flutter MaterialApp',
-        // Statless 였는데 statefull 이 가져감
-        home: RandomWords());
+      title: 'Welcome to Flutter MaterialApp',
+      // Statless 였는데 statefull 이 가져감
+      home: RandomWords(),
+      theme: ThemeData(
+        primaryColor: Colors.white,
+      ),
+    );
   }
 }
