@@ -68,10 +68,45 @@ void main() => runApp(MyApp());
 
 //State Class 의
 class RandomWordsState extends State<RandomWords> {
+  //list 변수
+  final _suggestions = <WordPair>[];
+  final _biggerFont = const TextStyle(fontSize: 18.0);
+
   @override
   Widget build(BuildContext context) {
-    final wordPair = WordPair.random();
-    return Text(wordPair.asPascalCase);
+    // final wordPair = WordPair.random();
+    // return Text(wordPair.asPascalCase);
+
+    // Scaffold 는 State 에서 만드데, 값이 계속 바뀜
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Startup Name Generator'),
+      ),
+      body: _buildSuggestions(),
+    );
+  }
+
+  Widget _buildSuggestions() {
+    return ListView.builder(
+        padding: const EdgeInsets.all(16.0),
+        itemBuilder: (context, i) {
+          if (i.isOdd) return Divider();
+
+          final index = i ~/ 2;
+          if (index >= _suggestions.length) {
+            _suggestions.addAll(generateWordPairs().take(10));
+          }
+          return _buildRow(_suggestions[index]);
+        });
+  }
+
+  Widget _buildRow(WordPair pair) {
+    return ListTile(
+      title: Text(
+        pair.asPascalCase,
+        style: _biggerFont,
+      ),
+    );
   }
 }
 
@@ -86,16 +121,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // final wordPair = WordPair.random();
     return MaterialApp(
-      title: 'Welcome to Flutter MaterialApp',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Welcome to Flutter AppBar'),
-        ),
-        body: Center(
-          // child: Text(wordPair.asPascalCase),
-          child: RandomWords(),
-        ),
-      ),
-    );
+        title: 'Welcome to Flutter MaterialApp',
+        // Statless 였는데 statefull 이 가져감
+        home: RandomWords());
   }
 }
