@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 
@@ -164,17 +162,57 @@ class RandomWords extends StatefulWidget {
   RandomWordsState createState() => RandomWordsState();
 }
 
+//Drawer MyHomePage
+class MyHomePage extends StatelessWidget {
+  final String title;
+
+  MyHomePage({Key key, this.title}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(title)),
+      body: Center(child: Text('My Page')),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('Drawer Header'),
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+            ),
+            ListTile(
+                title: Text('Item 1'),
+                onTap: () {
+                  Navigator.pop(context);
+                }),
+            ListTile(
+                title: Text('Item 2'),
+                onTap: () {
+                  Navigator.pop(context);
+                }),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class MyApp extends StatelessWidget {
+  final String appTitle = 'Drawer Demo';
   @override
   Widget build(BuildContext context) {
     // final wordPair = WordPair.random();
     return MaterialApp(
       title: 'Welcome to Flutter MaterialApp',
       // Statless 였는데 statefull 이 가져감
-      home: RandomWords(),
-      theme: ThemeData(
-        primaryColor: Colors.white,
-      ),
+      // home: RandomWords(),
+      home: MyHomePage(title: appTitle),
+      // theme: ThemeData(
+      //   primaryColor: Colors.white,
+      // ),
     );
   }
 }
