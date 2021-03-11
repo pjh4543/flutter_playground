@@ -1,42 +1,60 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(SnackBarDemo());
+void main() => runApp(MyApp());
 
-class SnackBarDemo extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final appTitle = 'Form Validation Demo';
+
     return MaterialApp(
-      title: 'SnackBar Demo',
+      title: appTitle,
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('SnackBar Demo'),
-        ),
-        body: SnackBarPage(), //snackBar 를 쓰기위해 곧바로 body 에statelessWidge
-      ),
+          appBar: AppBar(
+            title: Text(appTitle),
+          ),
+          body: MyCustomForm()),
     );
   }
 }
 
-class SnackBarPage extends StatelessWidget {
+class MyCustomForm extends StatefulWidget {
+  @override
+  MyCustomFormState createState() {
+    return MyCustomFormState();
+  }
+}
+
+class MyCustomFormState extends State<MyCustomForm> {
+  //unique , form widget을 unique 하게 식별
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: RaisedButton(
-      onPressed: () {
-        final snackBar = SnackBar(
-          content: Text('Yay! A SnackBar'),
-          action: SnackBarAction(
-            label: 'Undo',
-            onPressed: () {
-              // somde code
-            },
-          ),
-        );
-        //화면에 보여주는 거 of
-        Scaffold.of(context).showSnackBar(snackBar);
-      },
-      child: Text('Show snackBar'),
-    ));
+    return Form(
+        key: _formKey,
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Please enter';
+                }
+                return null;
+              },
+            ),
+            RaisedButton(
+              onPressed: () {
+                // 신기함
+                if (_formKey.currentState.validate()) {
+                  Scaffold.of(context)
+                      .showSnackBar(SnackBar(content: Text('Processing Data')));
+                }
+              },
+              child: Text('Submit'),
+            )
+          ],
+        ));
   }
 }
