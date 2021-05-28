@@ -36,20 +36,23 @@ class Lot {
       this.currentStatus,
       this.wafers});
 
+  List<Wafer> getWafers() {
+    return this.wafers;
+  }
+
   factory Lot.fromJson(Map<String, dynamic> json) {
     return Lot(
-      lotId: json['lotId'],
-      lotType: json['lotType'],
-      partId: json['partId'],
-      step: json['step'],
-      qty: json['qty'],
-      totalGoods: json['totalGoods'],
-      edsStatus: json['edsStatus'],
-      currentStatus: json['currentStatus'],
-      roomBay: json['roomBay'],
-      // wafers: List<Wafer>.from(
-      //     json['wafers'].map((model) => Wafer.fromJson(model)))
-    );
+        lotId: json['lotId'],
+        lotType: json['lotType'],
+        partId: json['partId'],
+        step: json['step'],
+        qty: json['qty'],
+        totalGoods: json['totalGoods'],
+        edsStatus: json['edsStatus'],
+        currentStatus: json['currentStatus'],
+        roomBay: json['roomBay'],
+        wafers: List<Wafer>.from(
+            json['wafers'].map((model) => Wafer.fromJson(model))));
   }
 }
 

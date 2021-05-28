@@ -74,22 +74,8 @@ class _MyAppState extends State<MyApp> {
                 Padding(padding: EdgeInsets.only(bottom: 10)),
                 Row(
                   children: <Widget>[
-                    // Center(child: DrawWaferState()),
-                    // FutureBuilder<Post>(
-                    //   future: post,
-                    //   builder: (context, snapshot) {
-                    //     if (snapshot.hasData) {
-                    //       return Text(snapshot.data.title);
-                    //     } else if (snapshot.hasError) {
-                    //       return Text("${snapshot.error}");
-                    //     }
-
-                    //     // 기본적으로 로딩 Spinner를 보여줍니다.
-                    //     return CircularProgressIndicator();
-                    //   },
-                    // ),
-
-                    Center(child: GetLotInformation())
+                    Center(child: DrawWaferState()),
+                    Center(child: GetLotInformation()),
                   ],
                 )
               ],
