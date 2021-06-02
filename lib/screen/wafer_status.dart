@@ -29,7 +29,7 @@ Row insertWaferRow(Wafer wafer) {
     //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: <Widget>[
       Padding(
-        padding: EdgeInsets.only(right: 10),
+        padding: EdgeInsets.only(right: 50),
       ),
       InkWell(
           child: Stack(

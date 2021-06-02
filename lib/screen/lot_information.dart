@@ -22,8 +22,6 @@ class GetLotInformation extends StatefulWidget {
 }
 
 class _GetLotInfState extends State<GetLotInformation> {
-  Future<Lot> lot = fetchLot();
-
 // 오류나는ㄷ 왜지
   // _GetLotInfState() {
   //   setState(() {
@@ -38,48 +36,75 @@ class _GetLotInfState extends State<GetLotInformation> {
         color: Colors.yellow,
         padding: EdgeInsets.only(left: 10),
         child: Column(children: <Widget>[
-          Row(
-            children: <Widget>[
-              Text('Lot ID: ', style: TextStyle(fontWeight: FontWeight.bold)),
-              Padding(padding: EdgeInsets.only(left: 10)),
-              //Text(lot.lotId),
-              FutureBuilder(
-                  future: lot,
-                  builder: (BuildContext context, AsyncSnapshot snaphost) {
-                    // 데이터 아직 없음
-                    if (snaphost.hasData == false) {
-                      return Text('Empty');
-                    } else if (snaphost.hasError) {
-                      return Text(' Error: ${snaphost.error}');
-                    }
-                    // 정상
-                    else {
-                      return Text(snaphost.data.lotId);
-                    }
-                  })
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Text('Part ID: ', style: TextStyle(fontWeight: FontWeight.bold)),
-              Padding(padding: EdgeInsets.only(left: 10)),
-              //Text(lot.lotId),
-              FutureBuilder(
-                  future: lot,
-                  builder: (BuildContext context, AsyncSnapshot snaphost) {
-                    // 데이터 아직 없음
-                    if (snaphost.hasData == false) {
-                      return Text('Empty');
-                    } else if (snaphost.hasError) {
-                      return Text(' Error: ${snaphost.error}');
-                    }
-                    // 정상
-                    else {
-                      return Text(snaphost.data.partId);
-                    }
-                  })
-            ],
-          ),
+          FutureBuilder(
+              future: fetchLot(),
+              builder: (BuildContext context, AsyncSnapshot snaphost) {
+                // 데이터 아직 없음
+                if (snaphost.hasData == false) {
+                  return Text('Empty');
+                } else if (snaphost.hasError) {
+                  return Text(' Error: ${snaphost.error}');
+                }
+                // 정상
+                else {
+                  List<Row> _rows = [];
+                  _rows.add(new Row(children: [
+                    Text('Lot ID: ',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text(snaphost.data.lotId)
+                  ]));
+
+                  _rows.add(new Row(children: [
+                    Text('Part ID: ',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text(snaphost.data.partId)
+                  ]));
+
+                  _rows.add(new Row(children: [
+                    Text('Lots Type: ',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text(snaphost.data.lotType)
+                  ]));
+
+                  _rows.add(new Row(children: [
+                    Text('STEP: ',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text(snaphost.data.step)
+                  ]));
+
+                  _rows.add(new Row(children: [
+                    Text('QTY : ',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text(snaphost.data.qty.toString())
+                  ]));
+
+                  _rows.add(new Row(children: [
+                    Text('Goods: ',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text(snaphost.data.totalGoods.toString())
+                  ]));
+
+                  _rows.add(new Row(children: [
+                    Text('edsStatus: ',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text(snaphost.data.edsStatus.toString())
+                  ]));
+
+                  _rows.add(new Row(children: [
+                    Text('currentStatus: ',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text(snaphost.data.currentStatus.toString())
+                  ]));
+                  _rows.add(new Row(children: [
+                    Text('Room/Bay: ',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text(snaphost.data.roomBay)
+                  ]));
+
+                  return Column(children: _rows);
+                }
+              }),
+
           // Text('PARTID: ' + lot.partId,
           //     textAlign: TextAlign.left,
           //     style: TextStyle(fontWeight: FontWeight.bold)),

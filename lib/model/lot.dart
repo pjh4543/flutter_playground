@@ -47,9 +47,9 @@ class Lot {
         partId: json['partId'],
         step: json['step'],
         qty: json['qty'],
-        totalGoods: json['totalGoods'],
-        edsStatus: json['edsStatus'],
-        currentStatus: json['currentStatus'],
+        totalGoods: json['goods'],
+        edsStatus: json['edsStat'],
+        currentStatus: json['currentLoc'],
         roomBay: json['roomBay'],
         wafers: List<Wafer>.from(
             json['wafers'].map((model) => Wafer.fromJson(model))));
