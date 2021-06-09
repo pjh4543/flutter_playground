@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatefulWidget {
+  final ValueChanged<String> onGetLotid;
+
+  SearchScreen({Key key, this.onGetLotid}) : super(key: key);
+
   _SearchScreenState createState() => _SearchScreenState();
 }
 
@@ -23,6 +27,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(DateTime.now().toString() + '----------------------------------');
     // TODO: implement build
     return Container(
         child: Column(children: <Widget>[
@@ -37,10 +42,16 @@ class _SearchScreenState extends State<SearchScreen> {
             Expanded(
               flex: 6,
               child: TextField(
+                onSubmitted: (String text) {
+                  widget.onGetLotid(text);
+                  setState(() {
+                    print('haa' + text);
+                    _filter.clear();
+                    _searchText = "";
+                  });
+                },
                 focusNode: focuseNode,
-                style: TextStyle(
-                  fontSize: 15,
-                ),
+                style: TextStyle(fontSize: 35, color: Colors.white70),
                 autofocus: true,
                 controller: _filter,
                 decoration: InputDecoration(
@@ -100,7 +111,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   )
           ],
         ),
-      )
+      ),
     ]));
   }
 }

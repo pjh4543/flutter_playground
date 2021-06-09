@@ -43,7 +43,16 @@ Row insertWaferRow(Wafer wafer) {
   );
 }
 
-class DrawWaferState extends StatelessWidget {
+class DrawWaferState extends StatefulWidget {
+  final String lotid;
+
+  DrawWaferState({Key key, @required this.lotid}) : super(key: key);
+
+  _DrawWaferState createState() => _DrawWaferState();
+}
+
+class _DrawWaferState extends State<DrawWaferState> {
+  Lot l = new Lot();
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -53,7 +62,7 @@ class DrawWaferState extends StatelessWidget {
         Container(
           color: Colors.greenAccent,
           child: FutureBuilder(
-              future: fetchLot(),
+              future: l.fetchLot(widget.lotid),
               builder: (BuildContext context, AsyncSnapshot snaphost) {
                 // 데이터 아직 없음
                 if (snaphost.hasData == false) {

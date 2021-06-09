@@ -49,6 +49,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Future<Post> post;
+  String _lotid;
 
   @override
   void initState() {
@@ -70,12 +71,18 @@ class _MyAppState extends State<MyApp> {
           body: Container(
             child: Column(
               children: <Widget>[
-                SearchScreen(),
+                new SearchScreen(
+                  onGetLotid: (lotid) {
+                    _lotid = lotid;
+                    print(_lotid + ' enterd');
+                    setState(() {});
+                  },
+                ),
                 Padding(padding: EdgeInsets.only(bottom: 10)),
                 Row(
                   children: <Widget>[
-                    Center(child: DrawWaferState()),
-                    Center(child: GetLotInformation()),
+                    Center(child: DrawWaferState(lotid: _lotid)),
+                    Center(child: GetLotInformation(lotid: _lotid)),
                   ],
                 )
               ],
